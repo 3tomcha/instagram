@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Article;
 
 class PostController extends Controller
 {
@@ -55,7 +56,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('show', ['article' => Article::find($id)]);
     }
 
     /**
@@ -66,7 +67,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        //投稿の編集機能はなし
     }
 
     /**
@@ -78,7 +79,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+            //投稿の更新機能はなし
     }
 
     /**
@@ -89,6 +90,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Article::find($id)->delete();
+        redirect('/');
     }
 }

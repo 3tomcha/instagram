@@ -19,6 +19,7 @@ Route::get('/', 'PostController@index');
 Route::get('/posts/new', 'PostController@create');
 Route::post('/posts', 'PostController@store');
 Route::delete('/posts/{id}', 'PostController@destroy');
+Route::get('/posts/{id}', 'PostController@show');
 // Route::resource('posts', 'PostController');
 //
 // Route::get('/posts/new', function () {
