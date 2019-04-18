@@ -12,5 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  echo "投稿一覧ページです";
 });
+
+Route::get('/posts/new', function () {
+  echo "投稿ページです";
+});
+
+Route::get('/posts/19', function () {
+  echo "投稿詳細ページです";
+});
+
+// Route::get('/', 'IndeController@index')
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
