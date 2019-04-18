@@ -10,11 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// 
+// Route::get('/', function () {
+//   echo "投稿一覧ページです";
+// });
 
-Route::get('/', function () {
-  echo "投稿一覧ページです";
-});
-
+Route::get('/', 'PostController@index');
 Route::get('/posts/new', 'PostController@create');
 Route::post('/posts', 'PostController@store');
 //
