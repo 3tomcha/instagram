@@ -18,7 +18,7 @@
     <div class="card-deck">
       <div class="row">
         <div class="col">
-          <?php foreach ($articles as $article): ?>
+            @foreach($articles as $article)
             <div class="card mb-5">
               <div class="col card-header">
                 <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
@@ -26,7 +26,7 @@
                 <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
                   @csrf
                   @method('DELETE')
-                  <a href="#"><p id='submit{{$article->id}}'><i class="fas fa-trash-alt"></i>削除する</p></a>
+                  <a href="#"><p id='submit{{$article->id}}'><i class="fas fa-trash-alt fa-5x"></i></p></a>
                 </form>
                 <script type="text/javascript">
                 var article_id = {{$article->id}};
@@ -41,26 +41,25 @@
               </div>
               <div class="col">
                 <a href="/favorites/{{$article->id}}" id="favorite{{$article->id}}">イイネボタン</a>
+                <p><i class="far fa-heart fa-2x"></i></p>
               </div>
               <div class="col mb-1">
                 <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
                 <span class="text-secondary">{{$article->updated_at}}</span>
               </div>
-              <?php foreach ($article->comment as $comment): ?>
+                @foreach($article->comment as $comment)
                 <div class="col mb-1">
                   <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
                   <span class="text-secondary">{{$comment->updated_at}}</span>
                 </div>
-
-              <?php endforeach; ?>
-
+              @endforeach
               <form action="/comments/{{$article->id}}" method="post">
                 @csrf
                 <input type="text" name="comment" placeholder="コメント...">
                 <input type="submit" value="コメントを書き込む">
               </form>
             </div>
-          <?php endforeach; ?>
+          @endforeach
         </div>
       </div>
     </div>
