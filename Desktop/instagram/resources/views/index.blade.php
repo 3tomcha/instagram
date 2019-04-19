@@ -3,7 +3,7 @@
 <?php foreach ($articles as $article): ?>
 {{$article->user->name}}<br>
 <!-- <a href="/posts/{{$article->id}}">削除する</a> -->
-<form  action="/posts/{{$article->id}}" method="post">
+<form action="/posts/{{$article->id}}" method="post">
 @csrf
 @method('DELETE')
 <input type="submit" value="削除する">
@@ -12,4 +12,5 @@
 {{$article->user->name}}<br>
 {{$article->caption}}<br>
 {{$article->updated_at}}<br>
+<a href="/favorites/{{$article->id}}" id="favorite{{$article->id}}">イイネボタン</a>
 <?php endforeach; ?>

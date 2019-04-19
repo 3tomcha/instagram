@@ -15,11 +15,14 @@
 //   echo "投稿一覧ページです";
 // });
 
-Route::get('/', 'PostController@index');
-Route::get('/posts/new', 'PostController@create');
-Route::post('/posts', 'PostController@store');
-Route::delete('/posts/{id}', 'PostController@destroy');
-Route::get('/posts/{id}', 'PostController@show');
+Route::get('/', 'PostController@index')->middleware('auth');
+Route::get('/posts/new', 'PostController@create')->middleware('auth');;
+Route::post('/posts', 'PostController@store')->middleware('auth');;
+Route::delete('/posts/{id}', 'PostController@destroy')->middleware('auth');;
+Route::get('/posts/{id}', 'PostController@show')->middleware('auth');;
+
+Route::get('/favorites/{id}', 'FavoriteController@index')->middleware('auth');;
+
 // Route::resource('posts', 'PostController');
 //
 // Route::get('/posts/new', function () {
