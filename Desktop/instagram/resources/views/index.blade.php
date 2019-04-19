@@ -33,7 +33,19 @@
                 <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
                 <span class="text-secondary">{{$article->updated_at}}</span>
               </div>
-              <input type="text" name="" value="" placeholder="コメント...">
+              <?php foreach ($article->comment as $comment): ?>
+                <div class="col mb-1">
+                  <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
+                  <span class="text-secondary">{{$comment->updated_at}}</span>
+                </div>
+
+              <?php endforeach; ?>
+
+              <form action="/comments/{{$article->id}}" method="post">
+                @csrf
+                <input type="text" name="comment" placeholder="コメント...">
+                <input type="submit" value="コメントを書き込む">
+              </form>
             </div>
           <?php endforeach; ?>
         </div>

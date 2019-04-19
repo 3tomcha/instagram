@@ -22,6 +22,10 @@ Route::delete('/posts/{id}', 'PostController@destroy')->middleware('auth');;
 Route::get('/posts/{id}', 'PostController@show')->middleware('auth');;
 
 Route::get('/favorites/{id}', 'FavoriteController@index')->middleware('auth');;
+Route::post('/comments/{id}', 'CommentController@index')->middleware('auth');;
+
+
+
 
 // Route::resource('posts', 'PostController');
 //
