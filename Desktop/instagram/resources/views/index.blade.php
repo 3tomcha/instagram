@@ -3,11 +3,17 @@
 <head>
   <script src="/js/app.js"></script>
   <link rel="stylesheet" href="/css/app.css">
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
   <meta charset="utf-8">
   <title></title>
 </head>
 <body>
-  投稿一覧ページ
+  <header class="navbar navbar-light">
+    <img class="h-100" src="/img/logo.png">
+    <div class="justyfy-content-end">
+      <a href="/posts/new">投稿する</a>
+    </div>
+  </header>
   <div class="container">
     <div class="card-deck">
       <div class="row">
@@ -17,11 +23,18 @@
               <div class="col card-header">
                 <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
                 {{$article->user->name}}
-                <form class="float-right" action="/posts/{{$article->id}}" method="post">
+                <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
                   @csrf
                   @method('DELETE')
-                  <input type="submit" value="削除する">
+                  <a href="#"><p id='submit{{$article->id}}'><i class="fas fa-trash-alt"></i>削除する</p></a>
                 </form>
+                <script type="text/javascript">
+                var article_id = {{$article->id}};
+                  document.getElementById("submit{{$article->id}}").addEventListener('click', function(event){
+                        event.preventDefault();
+                        document.forms["delete{{$article->id}}"].submit();
+                  });
+                </script>
               </div>
               <div class="col card-img-top">
                 <img src="storage/images/{{$article->image}}"><br>
@@ -53,4 +66,5 @@
     </div>
   </div>
 </body>
+
 </html>
