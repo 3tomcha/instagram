@@ -28,21 +28,14 @@
                   @method('DELETE')
                   <a href="#"><p id='submit{{$article->id}}'><i class="fas fa-trash-alt fa-5x"></i></p></a>
                 </form>
-                <!-- 外部へ移動 -->
-                <!-- <script type="text/javascript">
-                  document.getElementById("submit{{$article->id}}").addEventListener('click', function(event){
-                        event.preventDefault();
-                        document.forms["delete{{$article->id}}"].submit();
-                  });
-                </script> -->
               </div>
               <div class="col card-img-top">
                 <img src="storage/images/{{$article->image}}"><br>
               </div>
-              <div class="col">
+              <div class="col favorites">
                 <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="far fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
 
-                <script type="text/javascript">
+                <!-- <script type="text/javascript">
                 document.getElementById("favorite_outer{{$article->id}}").addEventListener('click', function(event){
                   event.preventDefault();
                   var target = document.getElementById("favorite_outer{{$article->id}}");
@@ -57,7 +50,7 @@
                     target.parentElement.removeChild(target.nextSibling);
                   }
                 });
-                </script>
+                </script> -->
 
               </div>
               <div class="col mb-1">
@@ -95,4 +88,29 @@ for (let card_header of card_headers) {
   });
 }
 </script>
+
+<script type="text/javascript">
+// ハートをクリックすると、いいね処理
+var favorites = document.getElementsByClassName('favorites');
+
+for (let favorite of favorites) {
+  let target = favorite.children[0];
+
+  target.addEventListener('click', function(event){
+    // event.preventDefault();
+    if(target.firstChild.classList.contains('far')){
+       target.firstChild.classList.replace('far','fas');
+       var newP = document.createElement('p');
+       var newContents = document.createTextNode('いいねしました');
+       newP.appendChild(newContents);
+       target.parentElement.insertBefore(newP, target.nextSibling);
+     }else if (target.firstChild.classList.contains('fas')) {
+       target.firstChild.classList.replace('fas','far');
+       target.parentElement.removeChild(target.nextSibling);
+     }
+  });
+}
+</script>
+
+
 </html>
