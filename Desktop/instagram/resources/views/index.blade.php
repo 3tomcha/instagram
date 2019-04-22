@@ -34,6 +34,8 @@
               </div>
               <div class="col favorites">
                 <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="far fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
+                <!-- いいね済みだったらfar、いいね未だったらfas -->
+                <!-- いいねされているarticle_idを送るようにする -->
 
                 <!-- <script type="text/javascript">
                 document.getElementById("favorite_outer{{$article->id}}").addEventListener('click', function(event){

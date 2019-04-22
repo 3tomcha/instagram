@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
+use App\Favorite;
 
 class PostController extends Controller
 {
@@ -12,12 +13,20 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $articles = Article::all();
-        // dd($articles[0]->image);
-        return view('index', ['articles' => $articles]);
-    }
+     public function index()
+     {
+       $articles = Article::all();
+       foreach (Favorite::all()->unique('article_id') as $favorite) {
+         $fs = Favorite::where('article_id', $favorite->article_id)->get();
+         $user_ids = array();
+         foreach ($fs as $f) {
+           $user_ids[] = $f->user_id;
+         }
+         $result[] = ['article_id' => $favorite->article_id, 'user_id' => $user_ids];
+       }
+       dd($result);
+       return view('index', ['articles' => $articles]);
+     }
 
     /**
      * Show the form for creating a new resource.
