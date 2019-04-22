@@ -28,20 +28,37 @@
                   @method('DELETE')
                   <a href="#"><p id='submit{{$article->id}}'><i class="fas fa-trash-alt fa-5x"></i></p></a>
                 </form>
-                <script type="text/javascript">
-                var article_id = {{$article->id}};
+                <!-- 外部へ移動 -->
+                <!-- <script type="text/javascript">
                   document.getElementById("submit{{$article->id}}").addEventListener('click', function(event){
                         event.preventDefault();
                         document.forms["delete{{$article->id}}"].submit();
                   });
-                </script>
+                </script> -->
               </div>
               <div class="col card-img-top">
                 <img src="storage/images/{{$article->image}}"><br>
               </div>
               <div class="col">
-                <a href="/favorites/{{$article->id}}" id="favorite{{$article->id}}">イイネボタン</a>
-                <p><i class="far fa-heart fa-2x"></i></p>
+                <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="far fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
+
+                <script type="text/javascript">
+                document.getElementById("favorite_outer{{$article->id}}").addEventListener('click', function(event){
+                  event.preventDefault();
+                  var target = document.getElementById("favorite_outer{{$article->id}}");
+                  if(target.firstChild.classList.contains('far')){
+                    target.firstChild.classList.replace('far','fas');
+                    var newP = document.createElement('p');
+                    var newContents = document.createTextNode('いいねしました');
+                    newP.appendChild(newContents);
+                    document.getElementById("favorite_outer{{$article->id}}").parentElement.insertBefore(newP, document.getElementById("favorite_outer{{$article->id}}").nextSibling);
+                  }else if (target.firstChild.classList.contains('fas')) {
+                    target.firstChild.classList.replace('fas','far');
+                    target.parentElement.removeChild(target.nextSibling);
+                  }
+                });
+                </script>
+
               </div>
               <div class="col mb-1">
                 <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
@@ -65,5 +82,17 @@
     </div>
   </div>
 </body>
+<script type="text/javascript">
+// ゴミ箱をクリックすると、削除処理
+var card_headers = document.getElementsByClassName('card-header');
 
+for (let card_header of card_headers) {
+  var form = card_header.getElementsByTagName('form');
+  var a = card_header.getElementsByTagName('a');
+  a[0].addEventListener('click',function(event){
+    event.preventDefault();
+    form[0].submit();
+  });
+}
+</script>
 </html>
