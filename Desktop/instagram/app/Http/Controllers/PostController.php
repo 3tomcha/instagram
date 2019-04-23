@@ -15,17 +15,12 @@ class PostController extends Controller
      */
      public function index()
      {
-       $articles = Article::all();
-       foreach (Favorite::all()->unique('article_id') as $favorite) {
-         $fs = Favorite::where('article_id', $favorite->article_id)->get();
-         $user_ids = array();
-         foreach ($fs as $f) {
-           $user_ids[] = $f->user_id;
-         }
-         $result[] = ['article_id' => $favorite->article_id, 'user_id' => $user_ids];
-       }
-       dd($result);
-       return view('index', ['articles' => $articles]);
+       // $favorite = new Favorite;
+       // foreach (Favorite::all()->unique('article_id') as $f) {
+       //   $favorites[$f->article_id] = $favorite->select(['user_id'])->where('article_id',$f->article_id)->get();
+       // }
+       // dd($favorites);
+       return view('index', ['articles' => Article::all()]);
      }
 
     /**

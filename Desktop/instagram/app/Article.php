@@ -14,4 +14,8 @@ class Article extends Model
   {
     return $this->hasMany('App\Comment');
   }
+  public function favorite()
+  {
+    return $this->hasMany('App\Favorite');
+  }
 }

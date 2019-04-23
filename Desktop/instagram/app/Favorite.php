@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Favorite extends Model
 {
-  public function article()
+  public function user()
   {
-    return $this->hasMany('App\Article');
+    return $this->belongsTo('App\User');
   }
 }

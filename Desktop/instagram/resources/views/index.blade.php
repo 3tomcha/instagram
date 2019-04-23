@@ -33,27 +33,13 @@
                 <img src="storage/images/{{$article->image}}"><br>
               </div>
               <div class="col favorites">
-                <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="far fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
-                <!-- いいね済みだったらfar、いいね未だったらfas -->
-                <!-- いいねされているarticle_idを送るようにする -->
-
-                <!-- <script type="text/javascript">
-                document.getElementById("favorite_outer{{$article->id}}").addEventListener('click', function(event){
-                  event.preventDefault();
-                  var target = document.getElementById("favorite_outer{{$article->id}}");
-                  if(target.firstChild.classList.contains('far')){
-                    target.firstChild.classList.replace('far','fas');
-                    var newP = document.createElement('p');
-                    var newContents = document.createTextNode('いいねしました');
-                    newP.appendChild(newContents);
-                    document.getElementById("favorite_outer{{$article->id}}").parentElement.insertBefore(newP, document.getElementById("favorite_outer{{$article->id}}").nextSibling);
-                  }else if (target.firstChild.classList.contains('fas')) {
-                    target.firstChild.classList.replace('fas','far');
-                    target.parentElement.removeChild(target.nextSibling);
-                  }
-                });
-                </script> -->
-
+                <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="{{ (count($article->favorite) > 0) ? 'fas':'far'}} fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
+                @if(count($article->favorite) > 0)
+                  @foreach($article->favorite as $fav)
+                    {{$fav->user->name}}
+                  @endforeach
+                  がいいねしました
+                @endif
               </div>
               <div class="col mb-1">
                 <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
