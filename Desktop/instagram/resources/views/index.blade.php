@@ -57,7 +57,7 @@
                 <div class="col-md-10">
                   <input type="text" class="btn-block h-100" name="comment" placeholder="コメント...">
                 </div>
-                <div class="col-md-2 btn-block bg-primary center-block"><i class="fas fa-angle-right text-white fa-3x"></i></div>
+                <div class="col-md-2 btn-block bg-primary center-block submit"><i class="fas fa-angle-right text-white fa-3x"></i></div>
             </div>
             </form>
           </div>
