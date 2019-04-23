@@ -15,50 +15,54 @@
     </div>
   </header>
   <div class="container">
-    <div class="card-deck">
-      <div class="row">
-        <div class="col">
-            @foreach($articles as $article)
-            <div class="card mb-5">
-              <div class="col card-header">
-                <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
-                {{$article->user->name}}
-                <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <a href="#"><p id='submit{{$article->id}}'><i class="fas fa-trash-alt fa-5x"></i></p></a>
-                </form>
-              </div>
-              <div class="col card-img-top">
-                <img src="storage/images/{{$article->image}}"><br>
-              </div>
-              <div class="col favorites">
-                <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="{{ (count($article->favorite) > 0) ? 'fas':'far'}} fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
-                @if(count($article->favorite) > 0)
-                  @foreach($article->favorite as $fav)
-                    {{$fav->user->name}}
-                  @endforeach
-                  がいいねしました
-                @endif
-              </div>
-              <div class="col mb-1">
-                <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
-                <span class="text-secondary">{{$article->updated_at}}</span>
-              </div>
-                @foreach($article->comment as $comment)
-                <div class="col mb-1">
-                  <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
-                  <span class="text-secondary">{{$comment->updated_at}}</span>
-                </div>
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        @foreach($articles as $article)
+        <div class="card mb-5">
+          <div class="col card-header">
+            <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
+            {{$article->user->name}}
+            <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
+              @csrf
+              @method('DELETE')
+              <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
+            </form>
+          </div>
+          <div class="card-img-top text-center">
+            <img src="storage/images/{{$article->image}}" class="img-fluid"><br>
+          </div>
+          <div class="card-footer">
+            <div class="col favorites">
+              <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="{{ (count($article->favorite) > 0) ? 'fas':'far'}} fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a><br>
+              @if(count($article->favorite) > 0)
+              @foreach($article->favorite as $fav)
+              {{$fav->user->name}}
               @endforeach
-              <form action="/comments/{{$article->id}}" method="post">
-                @csrf
-                <input type="text" name="comment" placeholder="コメント...">
-                <input type="submit" value="コメントを書き込む">
-              </form>
+              がいいねしました
+              @endif
             </div>
-          @endforeach
+            <div class="col mb-1 caption">
+              <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
+              <span class="text-secondary">{{$article->updated_at}}</span>
+            </div>
+            @foreach($article->comment as $comment)
+            <div class="col mb-1">
+              <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
+              <span class="text-secondary">{{$comment->updated_at}}</span>
+            </div>
+            @endforeach
+            <form action="/comments/{{$article->id}}" method="post">
+              @csrf
+              <div class="row comment">
+                <div class="col-md-10">
+                  <input type="text" class="btn-block h-100" name="comment" placeholder="コメント...">
+                </div>
+                <div class="col-md-2 btn-block bg-primary center-block"><i class="fas fa-angle-right text-white fa-3x"></i></div>
+            </div>
+            </form>
+          </div>
         </div>
+        @endforeach
       </div>
     </div>
   </div>
@@ -87,15 +91,15 @@ for (let favorite of favorites) {
   target.addEventListener('click', function(event){
     // event.preventDefault();
     if(target.firstChild.classList.contains('far')){
-       target.firstChild.classList.replace('far','fas');
-       var newP = document.createElement('p');
-       var newContents = document.createTextNode('いいねしました');
-       newP.appendChild(newContents);
-       target.parentElement.insertBefore(newP, target.nextSibling);
-     }else if (target.firstChild.classList.contains('fas')) {
-       target.firstChild.classList.replace('fas','far');
-       target.parentElement.removeChild(target.nextSibling);
-     }
+      target.firstChild.classList.replace('far','fas');
+      var newP = document.createElement('p');
+      var newContents = document.createTextNode('いいねしました');
+      newP.appendChild(newContents);
+      target.parentElement.insertBefore(newP, target.nextSibling);
+    }else if (target.firstChild.classList.contains('fas')) {
+      target.firstChild.classList.replace('fas','far');
+      target.parentElement.removeChild(target.nextSibling);
+    }
   });
 }
 </script>

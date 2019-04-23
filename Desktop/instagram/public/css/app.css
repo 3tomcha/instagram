@@ -13546,3 +13546,14 @@ header {
   padding: 1%;
 }
 
+.post-profile-icon {
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.comment {
+  height: 10em;
+}
+
