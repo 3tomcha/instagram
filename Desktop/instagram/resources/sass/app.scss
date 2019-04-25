@@ -1,3 +1,7 @@
+$theme-colors:
+  (
+    "primary":    black,
+  );
 
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
@@ -11,14 +15,17 @@
 // Font Awesome
 @import "node_modules/font-awesome-scss/scss/font-awesome.scss";
 
+:root {
+  --primary: #000000;
+}
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 header{
-  height: 3rem;
-  padding: 1%;
+  height: 5rem;
 }
 
 
@@ -31,11 +38,15 @@ header{
 .comment{
   height:10em;
 }
-.submit{
+.comments{
   text-align: center;
   position: relative;
 }
-.submit i{
+.comment form{
+  height: 5rem;
+}
+
+.comments i{
   display: block;
   position: absolute;
   top: 0;
@@ -45,4 +56,15 @@ header{
   margin: auto;
   width: 80%;
   height: 3.2rem;
+}
+
+header img{
+  height: 4rem;
+}
+
+header{
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+.container{
+  max-width: 1140px;
 }

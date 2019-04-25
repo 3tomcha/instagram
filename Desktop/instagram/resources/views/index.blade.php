@@ -8,15 +8,17 @@
   <title></title>
 </head>
 <body>
-  <header class="navbar navbar-light">
-    <img class="h-100" src="/img/logo.png">
-    <div class="justyfy-content-end">
-      <a href="/posts/new">投稿する</a>
+  <header class="bg-white">
+    <div class="navbar navbar-light container mx-auto">
+      <img src="/img/logo.png">
+      <div class="justyfy-content-end">
+        <a href="/posts/new">投稿する</a>
+      </div>
     </div>
   </header>
   <div class="container">
     <div class="col-md-8 mx-auto">
-      <div class="card">
+      <div class="card mt-4">
         @foreach($articles as $article)
         <div class="card mb-5">
           <div class="col card-header">
@@ -51,15 +53,13 @@
               <span class="text-secondary">{{$comment->updated_at}}</span>
             </div>
             @endforeach
-            <form action="/comments/{{$article->id}}" method="post">
-              @csrf
-              <div class="row comment">
-                <div class="col-md-10">
-                  <input type="text" class="btn-block h-100" name="comment" placeholder="コメント...">
-                </div>
-                <div class="col-md-2 btn-block bg-primary center-block submit"><i class="fas fa-angle-right text-white fa-3x"></i></div>
+            <div class="comment">
+              <form action="/comments/{{$article->id}}" class="row" method="post">
+                @csrf
+                  <input type="text" class="h-100 col-md-10" name="comment" placeholder="コメント...">
+                <a class="col-md-2 btn-block bg-primary center-block comments" href="#"><i class="fas fa-angle-right text-white fa-3x"></i></a>
+              </form>
             </div>
-            </form>
           </div>
         </div>
         @endforeach
@@ -68,12 +68,25 @@
   </div>
 </body>
 <script type="text/javascript">
+// やじるしをクリックすると、コメント投稿処理
+let comments = document.getElementsByClassName('comment');
+for (let comment of comments) {
+  let form = comment.getElementsByTagName('form');
+  let a = comment.getElementsByTagName('a');
+  a[0].addEventListener('click',function(event){
+    event.preventDefault();
+    form[0].submit();
+  });
+}
+</script>
+
+<script type="text/javascript">
 // ゴミ箱をクリックすると、削除処理
-var card_headers = document.getElementsByClassName('card-header');
+let card_headers = document.getElementsByClassName('card-header');
 
 for (let card_header of card_headers) {
-  var form = card_header.getElementsByTagName('form');
-  var a = card_header.getElementsByTagName('a');
+  let form = card_header.getElementsByTagName('form');
+  let a = card_header.getElementsByTagName('a');
   a[0].addEventListener('click',function(event){
     event.preventDefault();
     form[0].submit();

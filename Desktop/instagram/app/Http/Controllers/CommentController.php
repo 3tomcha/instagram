@@ -9,6 +9,7 @@ class CommentController extends Controller
 {
   public function index(Request $request, $id)
   {
+    // dd($request);
 
     $article_id = $id;
 
