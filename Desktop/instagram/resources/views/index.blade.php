@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <script src="/js/app.js"></script>
   <link rel="stylesheet" href="/css/app.css">
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
   <meta charset="utf-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script src="/js/app.js"></script>
   <title></title>
 </head>
 <body>
@@ -18,17 +19,20 @@
   </header>
   <div class="container">
     <div class="col-md-8 mx-auto">
-      <div class="card mt-4">
+      <div class="mt-4">
         @foreach($articles as $article)
         <div class="card mb-5">
           <div class="col card-header">
             <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
             {{$article->user->name}}
+            @if($article->user->id == auth()->user()->id)
             <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
-              @csrf
               @method('DELETE')
+              @csrf
               <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
             </form>
+            @endauth
+
           </div>
           <div class="card-img-top text-center">
             <img src="storage/images/{{$article->image}}" class="img-fluid"><br>
@@ -67,26 +71,29 @@
     </div>
   </div>
 </body>
+
+<script type="text/javascript">
+// ゴミ箱をクリックすると、削除処理
+let card_headers = document.getElementsByClassName('card-header');
+for (let card_header of card_headers) {
+  console.log(card_header);
+  let form = card_header.getElementsByTagName('form');
+  let a = card_header.getElementsByTagName('a');
+  if ( typeof a[0] !== "undefined") {
+    a[0].addEventListener('click',function(){
+      event.preventDefault();
+      form[0].submit();
+    });
+  }
+}
+</script>
+
 <script type="text/javascript">
 // やじるしをクリックすると、コメント投稿処理
 let comments = document.getElementsByClassName('comment');
 for (let comment of comments) {
   let form = comment.getElementsByTagName('form');
   let a = comment.getElementsByTagName('a');
-  a[0].addEventListener('click',function(event){
-    event.preventDefault();
-    form[0].submit();
-  });
-}
-</script>
-
-<script type="text/javascript">
-// ゴミ箱をクリックすると、削除処理
-let card_headers = document.getElementsByClassName('card-header');
-
-for (let card_header of card_headers) {
-  let form = card_header.getElementsByTagName('form');
-  let a = card_header.getElementsByTagName('a');
   a[0].addEventListener('click',function(event){
     event.preventDefault();
     form[0].submit();
