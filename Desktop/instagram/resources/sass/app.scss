@@ -65,3 +65,15 @@ header{
 .container{
   max-width: 1140px;
 }
+.upload_zone{
+  width: 100%;
+  text-align: center;
+  line-height: 13rem;
+  border: 2px black dashed;
+}
+#image, #submit{
+  display: none;
+}
+#submit{
+  line-height:2rem;
+}
