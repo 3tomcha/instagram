@@ -13589,19 +13589,30 @@ header {
   max-width: 1140px;
 }
 
-.upload_zone {
+/*create画面*/
+
+#upload_zone {
   width: 100%;
   text-align: center;
   line-height: 13rem;
   border: 2px black dashed;
 }
 
-#image,
-#submit {
+#image {
   display: none;
 }
 
-#submit {
+.create #submit div {
   line-height: 2rem;
+  width: 4rem;
+  text-align: center;
+}
+
+.create #preview {
+  width: 50%;
+}
+
+.create input[type=text] {
+  width: 50%;
 }
 

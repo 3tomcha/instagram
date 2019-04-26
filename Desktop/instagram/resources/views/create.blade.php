@@ -1,26 +1,29 @@
 @include('layouts.header')
-<div class="container">
+<div class="container create">
   <div class="col-md-8 mx-auto">
     <div class="mt-4">
-      <div class="card">
-
-        <div class="upload_zone">
-            クリックして画像をアップロード
+      <div class="card row">
+        <div class="card-header">
+          新規投稿
         </div>
-
-
-        <form class="" action="/posts" method="post" enctype="multipart/form-data"><br>
-          @csrf
-
-          <input type="text" name="caption" value=""><br>
-          <input type="file" name="image" value="" id="image"><br>
-          <div class="d-flex justify-content-end">
-            <div class="col-md-1 btn-block bg-primary text-white">
-              送信
+        <div class="card-body text-center">
+        <div id="upload_zone" class="text-center mt-2">
+          クリックして画像をアップロード
+        </div>
+          <img src="" class="mt-2 img-fluid mx-auto" alt="" id="preview">
+          <form class="" id="post" action="/posts" method="post" enctype="multipart/form-data"><br>
+            @csrf
+            <input type="text" name="caption" value="" class="mx-auto" placeholder="青空が素敵でしょ"><br>
+            <input type="file" name="image" value="" id="image" onchange="previewFile()"><br>
+            <div class="d-flex justify-content-end">
+              <a href="#" id="submit">
+                <div class="btn-block bg-primary text-white">
+                  送信
+                </div>
+              </a>
             </div>
-            <input type="submit" id="submit">
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -29,21 +32,32 @@
 
 <script type="text/javascript">
 // 黒の点線をクリックしたら、画像の参照が働くようにする
-let upload_zone = document.getElementsByClassName('upload_zone');
-upload_zone[0].addEventListener("click", function(){
+var upload_zone = document.getElementById('upload_zone');
+upload_zone.addEventListener("click", function(){
   document.getElementById("image").click();
 });
 
+// みかけのsubmitボタンをクリックしたら、submitの処理が働くようにする
+let submit = document.getElementById('submit');
+submit.addEventListener("click", function(){
+  document.getElementById("post").submit();
+});
 
-// // やじるしをクリックすると、コメント投稿処理
-// let comments = document.getElementsByClassName('comment');
-// for (let comment of comments) {
-//   let form = comment.getElementsByTagName('form');
-//   let a = comment.getElementsByTagName('a');
-//   a[0].addEventListener('click',function(event){
-//     event.preventDefault();
-//     form[0].submit();
-//   });
-// }
+// 画像プレビュー処理
+function previewFile(){
+  var preview = document.querySelector('#preview');
+  var reader = new FileReader();
+  var file = document.querySelector("input[type=file]").files[0];
+
+  reader.addEventListener("load",function(){
+    preview.src = reader.result;
+    upload_zone.style.display = "none";
+  });
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
 </script>
 </html>
