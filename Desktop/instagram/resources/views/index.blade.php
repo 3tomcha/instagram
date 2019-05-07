@@ -20,27 +20,7 @@
           <img src="storage/images/{{$article->image}}" class="img-fluid"><br>
         </div>
         <div class="card-footer">
-          <div class="col favorites">
-
-            <?php
-            $heart = 'far';
-            foreach($article->favorite as $fav):
-              if($fav->user->id == auth()->user()->id){
-                $heart = 'fas';
-              }
-            endforeach;
-            ?>
-
-            <a href="ajax/favorites/{{$article->id}}" id="favorite_{{$article->id}}"><i class="{{$heart}} fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
-            @if(count($article->favorite) > 0)
-            <p>
-              @foreach($article->favorite as $fav)
-              {{$fav->user->name}}
-              @endforeach
-              がいいねしました
-            </p>
-            @endif
-          </div>
+          @include('layouts/favorite')
           <div class="col mb-1 caption">
             <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
             <span class="text-secondary">{{$article->updated_at}}</span>
@@ -95,45 +75,6 @@ for (let comment of comments) {
 </script>
 
 <script type="text/javascript">
-// (function(){
-//
-//   var favorites = document.getElementsByClassName('favorites');
-//
-//   for (let favorite of favorites) {
-//     let target = favorite.children[0];
-//     let url = target.getAttribute('href');
-//     console.log(url);
-//     var httpRequest = new XMLHttpRequest;
-//     httpRequest.onreadystatechange = createNode;
-//     httpRequest.open('GET', url);
-//     httpRequest.send();
-//
-//     function createNode(){
-//       try {
-//         if (httpRequest.readyState === XMLHttpRequest.DONE) {
-//           if (httpRequest.status ===200 ) {
-//             // この投稿をファボったユーザー
-//             var article_favorite_users = JSON.parse(httpRequest.responseText).article_favorite_users;
-//             if(article_favorite_users){
-//               console.log(article_favorite_users);
-//             }else{
-//               console.log("いません");
-//             }
-//           }else{
-//             alert("リクエストに問題が発生しました");
-//           }
-//         }
-//       } catch (e) {
-//         alert(e.getMessage());
-//       }
-//     }
-//   }
-// }
-// )();
-
-
-
-
 // ハートをクリックすると、いいね処理
 var favorites = document.getElementsByClassName('favorites');
 
@@ -141,15 +82,15 @@ for (let favorite of favorites) {
   let target = favorite.children[0];
 
   target.addEventListener('click', function(event){
+    event.preventDefault();
 
     let url = target.getAttribute('href');
-    event.preventDefault();
     var httpRequest = new XMLHttpRequest;
-    httpRequest.onreadystatechange = createNode;
+    httpRequest.onreadystatechange = makeRequest;
     httpRequest.open('GET', url);
     httpRequest.send();
 
-    function createNode(){
+    function makeRequest(){
       try {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
           if (httpRequest.status ===200 ) {
@@ -172,10 +113,8 @@ for (let favorite of favorites) {
         target.firstChild.classList.replace('fas','far');
       }
       var newP = document.createElement('p');
-      var newContents1 = document.createTextNode(users.join(","));
-      var newContents2 = document.createTextNode('がいいねしました');
+      var newContents1 = document.createTextNode(users.join(" ")+'がいいねしました');
       newP.appendChild(newContents1);
-      newP.appendChild(newContents2);
       target.parentElement.removeChild(target.nextElementSibling);
       target.parentElement.insertBefore(newP, target.nextElementSibling);
     }
