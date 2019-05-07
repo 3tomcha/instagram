@@ -13591,14 +13591,14 @@ header {
 
 /*create画面*/
 
-#upload_zone {
+.create #upload_zone {
   width: 100%;
   text-align: center;
   line-height: 13rem;
   border: 2px black dashed;
 }
 
-#image {
+.create #image {
   display: none;
 }
 

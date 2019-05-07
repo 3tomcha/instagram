@@ -20,8 +20,7 @@ Route::get('/posts/new', 'PostController@create')->middleware('auth');;
 Route::post('/posts', 'PostController@store')->middleware('auth');;
 Route::delete('/posts/{id}', 'PostController@destroy')->middleware('auth');;
 Route::get('/posts/{id}', 'PostController@show')->middleware('auth');;
-
-Route::get('/favorites/{id}', 'FavoriteController@index')->middleware('auth');;
+Route::get('ajax/favorites/{id}', 'FavoriteController')->middleware('auth');;
 Route::post('/comments/{id}', 'CommentController@index')->middleware('auth');;
 
 

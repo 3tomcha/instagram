@@ -1,57 +1,69 @@
-  @include('layouts.header')
-  <div class="container">
-    <div class="col-md-8 mx-auto">
-      <div class="mt-4">
-        @foreach($articles as $article)
-        <div class="card mb-5">
-          <div class="col card-header">
-            <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
-            {{$article->user->name}}
-            @if($article->user->id == auth()->user()->id)
-            <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
-              @method('DELETE')
-              @csrf
-              <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
-            </form>
-            @endauth
+@include('layouts.header')
+<div class="container">
+  <div class="col-md-8 mx-auto">
+    <div class="mt-4">
+      @foreach($articles as $article)
+      <div class="card mb-5">
+        <div class="col card-header">
+          <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
+          {{$article->user->name}}
+          @if($article->user->id == auth()->user()->id)
+          <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
+            @method('DELETE')
+            @csrf
+            <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
+          </form>
+          @endauth
 
-          </div>
-          <div class="card-img-top text-center">
-            <img src="storage/images/{{$article->image}}" class="img-fluid"><br>
-          </div>
-          <div class="card-footer">
-            <div class="col favorites">
-              <a href="/favorites/{{$article->id}}" id="favorite_outer{{$article->id}}"><i class="{{ (count($article->favorite) > 0) ? 'fas':'far'}} fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a><br>
-              @if(count($article->favorite) > 0)
+        </div>
+        <div class="card-img-top text-center">
+          <img src="storage/images/{{$article->image}}" class="img-fluid"><br>
+        </div>
+        <div class="card-footer">
+          <div class="col favorites">
+
+            <?php
+            $heart = 'far';
+            foreach($article->favorite as $fav):
+              if($fav->user->id == auth()->user()->id){
+                $heart = 'fas';
+              }
+            endforeach;
+            ?>
+
+            <a href="ajax/favorites/{{$article->id}}" id="favorite_{{$article->id}}"><i class="{{$heart}} fa-heart fa-2x" id="favorites_inner{{$article->id}}"></i></a>
+            @if(count($article->favorite) > 0)
+            <p>
               @foreach($article->favorite as $fav)
               {{$fav->user->name}}
               @endforeach
               がいいねしました
-              @endif
-            </div>
-            <div class="col mb-1 caption">
-              <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
-              <span class="text-secondary">{{$article->updated_at}}</span>
-            </div>
-            @foreach($article->comment as $comment)
-            <div class="col mb-1">
-              <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
-              <span class="text-secondary">{{$comment->updated_at}}</span>
-            </div>
-            @endforeach
-            <div class="comment">
-              <form action="/comments/{{$article->id}}" class="row" method="post">
-                @csrf
-                  <input type="text" class="h-100 col-md-10" name="comment" placeholder="コメント...">
-                <a class="col-md-2 btn-block bg-primary center-block comments" href="#"><i class="fas fa-angle-right text-white fa-3x"></i></a>
-              </form>
-            </div>
+            </p>
+            @endif
+          </div>
+          <div class="col mb-1 caption">
+            <strong class='mr-1'>{{$article->user->name}}</strong>{{$article->caption}}<br>
+            <span class="text-secondary">{{$article->updated_at}}</span>
+          </div>
+          @foreach($article->comment as $comment)
+          <div class="col mb-1">
+            <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
+            <span class="text-secondary">{{$comment->updated_at}}</span>
+          </div>
+          @endforeach
+          <div class="comment">
+            <form action="/comments/{{$article->id}}" class="row" method="post">
+              @csrf
+              <input type="text" class="h-100 col-md-10" name="comment" placeholder="コメント...">
+              <a class="col-md-2 btn-block bg-primary center-block comments" href="#"><i class="fas fa-angle-right text-white fa-3x"></i></a>
+            </form>
           </div>
         </div>
-        @endforeach
       </div>
+      @endforeach
     </div>
   </div>
+</div>
 </body>
 
 <script type="text/javascript">
@@ -83,6 +95,45 @@ for (let comment of comments) {
 </script>
 
 <script type="text/javascript">
+// (function(){
+//
+//   var favorites = document.getElementsByClassName('favorites');
+//
+//   for (let favorite of favorites) {
+//     let target = favorite.children[0];
+//     let url = target.getAttribute('href');
+//     console.log(url);
+//     var httpRequest = new XMLHttpRequest;
+//     httpRequest.onreadystatechange = createNode;
+//     httpRequest.open('GET', url);
+//     httpRequest.send();
+//
+//     function createNode(){
+//       try {
+//         if (httpRequest.readyState === XMLHttpRequest.DONE) {
+//           if (httpRequest.status ===200 ) {
+//             // この投稿をファボったユーザー
+//             var article_favorite_users = JSON.parse(httpRequest.responseText).article_favorite_users;
+//             if(article_favorite_users){
+//               console.log(article_favorite_users);
+//             }else{
+//               console.log("いません");
+//             }
+//           }else{
+//             alert("リクエストに問題が発生しました");
+//           }
+//         }
+//       } catch (e) {
+//         alert(e.getMessage());
+//       }
+//     }
+//   }
+// }
+// )();
+
+
+
+
 // ハートをクリックすると、いいね処理
 var favorites = document.getElementsByClassName('favorites');
 
@@ -90,16 +141,43 @@ for (let favorite of favorites) {
   let target = favorite.children[0];
 
   target.addEventListener('click', function(event){
-    // event.preventDefault();
-    if(target.firstChild.classList.contains('far')){
-      target.firstChild.classList.replace('far','fas');
+
+    let url = target.getAttribute('href');
+    event.preventDefault();
+    var httpRequest = new XMLHttpRequest;
+    httpRequest.onreadystatechange = createNode;
+    httpRequest.open('GET', url);
+    httpRequest.send();
+
+    function createNode(){
+      try {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+          if (httpRequest.status ===200 ) {
+            // この投稿をファボったユーザー
+            var article_favorite_users = JSON.parse(httpRequest.responseText).article_favorite_users;
+            createFavoriteNode(article_favorite_users);
+          }else{
+            alert("リクエストに問題が発生しました");
+          }
+        }
+      } catch (e) {
+        alert(e.getMessage());
+      }
+    }
+
+    function createFavoriteNode(users){
+      if(target.firstChild.classList.contains('far')){
+        target.firstChild.classList.replace('far','fas');
+      }else if (target.firstChild.classList.contains('fas')) {
+        target.firstChild.classList.replace('fas','far');
+      }
       var newP = document.createElement('p');
-      var newContents = document.createTextNode('いいねしました');
-      newP.appendChild(newContents);
-      target.parentElement.insertBefore(newP, target.nextSibling);
-    }else if (target.firstChild.classList.contains('fas')) {
-      target.firstChild.classList.replace('fas','far');
-      target.parentElement.removeChild(target.nextSibling);
+      var newContents1 = document.createTextNode(users.join(","));
+      var newContents2 = document.createTextNode('がいいねしました');
+      newP.appendChild(newContents1);
+      newP.appendChild(newContents2);
+      target.parentElement.removeChild(target.nextElementSibling);
+      target.parentElement.insertBefore(newP, target.nextElementSibling);
     }
   });
 }
