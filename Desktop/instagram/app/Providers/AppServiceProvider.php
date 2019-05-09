@@ -25,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
      public function boot()
      {
        // クラスベースのコンポーザを使用する
-       View::composer(
-         'layouts/favorite', 'App\Http\View\Composers\FavoriteComposer'
-       );
+       // View::composer(
+       //   'layouts/favorite', 'App\Http\View\Composers\FavoriteComposer'
+       // );
      }
    }
