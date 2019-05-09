@@ -19,7 +19,7 @@ class CommentController extends Controller
 
     // return $request->input('value');
     // 表示に必要な情報を返す
-    return ['comment_user_name' => $comment->user->name, 
+    return ['comment_user_name' => $comment->user->name,
     'comment_comment' => $comment->comment,
     'comment_updated_at' => $comment->updated_at];
   }

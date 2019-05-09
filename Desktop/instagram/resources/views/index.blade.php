@@ -169,6 +169,12 @@ for (let comment of comments) {
           if (httpRequest.status ===200 ) {
             console.log("成功です");
             console.log(httpRequest.responseText);
+            console.log(JSON.parse(httpRequest.responseText));
+            // let name = JSON.parse(httpRequest.responseText).comment_user_name;
+            // let comment = JSON.parse(httpRequest.responseText).comment_comment;
+            // let updated_at = JSON.parse(httpRequest.responseText).comment_comment;
+            console.log(comment);
+            createCommentNode(JSON.parse(httpRequest.responseText));
           }else{
             console.log("リクエストに問題が発生しました");
           }
@@ -179,20 +185,26 @@ for (let comment of comments) {
     }
   });
 
-  // ajaxで取得したファボっているユーザーを表示する
-  // function createCommentNode(users){
-  //
-  //   var newP = document.createElement('p');
-  //   var newContents = document.createTextNode(users.join(" ")+'がいいねしました');
-  //   newP.appendChild(newContents);
-  //
-  //   if(target.nextElementSibling){
-  //     target.parentElement.removeChild(target.nextElementSibling);
-  //   }
-  //   if (users.length > 0) {
-  //     target.parentElement.insertBefore(newP, target.nextElementSibling);
-  //   }
-  // }
+  //ajaxで取得したファボっているユーザーを表示する
+  function createCommentNode(json_data){
+    console.log(json_data.comment_user_name);
+
+    // これから下記部分を作成していく
+      // <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
+      // <span class="text-secondary">{{$comment->updated_at}}</span>
+
+
+    // var newP = document.createElement('p');
+    // var newContents = document.createTextNode(users.join(" ")+'がいいねしました');
+    // newP.appendChild(newContents);
+    //
+    // if(target.nextElementSibling){
+    //   target.parentElement.removeChild(target.nextElementSibling);
+    // }
+    // if (users.length > 0) {
+    //   target.parentElement.insertBefore(newP, target.nextElementSibling);
+    // }
+  }
 }
 
   </script>
