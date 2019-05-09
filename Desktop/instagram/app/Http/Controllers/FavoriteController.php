@@ -18,6 +18,7 @@ class FavoriteController extends Controller
     // もしすでに登録されている場合は、削除処理
     if (count($targetFavorite->get()) > 0) {
       $targetFavorite->delete();
+      $auth_user_favorited = false;
 
     // 新規登録処理
     }else{
@@ -25,21 +26,17 @@ class FavoriteController extends Controller
       $favorite->user_id = $user_id;
       $favorite->article_id = $article_id;
       $favorite->save();
+      $auth_user_favorited = true;
     }
-    // dd(Article::all()[0]->favorite);
 
-    $favorites = Article::all()[0]->favorite;
+    // この記事をファボっている人たちを返す
+    $favorites = Article::find($id)->favorite;
     $article_favorite_users = [];
 
     foreach ($favorites as $favorite) {
-      // dump($favorite->user->name);
       $article_favorite_users[] = $favorite->user->name;
     }
-    return ['article_favorite_users'=>$article_favorite_users];
-    // dd("aa");
 
-    // dd(new FavoriteCollection(Favorite::all()));
-    // return "aaa";
-    // return redirect('/');
+    return ['article_favorite_users' => $article_favorite_users, 'auth_user_favorited' => $auth_user_favorited];
   }
 }
