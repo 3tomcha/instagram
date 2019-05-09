@@ -34,11 +34,12 @@
             <span class="text-secondary">{{$comment->updated_at}}</span>
           </div>
           @endforeach
+          <div id="comment_area"></div>
           <div class="comment">
             <form action="/comments/{{$article->id}}" class="row" method="post">
               @csrf
-              <input type="text" class="h-100 col-md-10" name="comment" placeholder="コメント...">
-              <a class="col-md-2 btn-block bg-primary center-block comments" href="#"><i class="fas fa-angle-right text-white fa-3x"></i></a>
+              <input type="text" class="h-100 col-md-10 input" name="comment" placeholder="コメント...">
+              <a class="col-md-2 btn-block bg-primary center-block comments" href="/comments/{{$article->id}}"><i class="fas fa-angle-right text-white fa-3x"></i></a>
             </form>
           </div>
         </div>
@@ -64,18 +65,18 @@ for (let card_header of card_headers) {
 }
 </script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 // やじるしをクリックすると、コメント投稿処理
 let comments = document.getElementsByClassName('comment');
 for (let comment of comments) {
-  let form = comment.getElementsByTagName('form');
-  let a = comment.getElementsByTagName('a');
-  a[0].addEventListener('click',function(event){
-    event.preventDefault();
-    form[0].submit();
-  });
+let form = comment.getElementsByTagName('form');
+let a = comment.getElementsByTagName('a');
+a[0].addEventListener('click',function(event){
+event.preventDefault();
+form[0].submit();
+});
 }
-</script>
+</script> -->
 
 <script type="text/javascript">
 // ハートをクリックすると、いいね処理
@@ -99,7 +100,7 @@ for (let favorite of favorites) {
       try {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
           if (httpRequest.status ===200 ) {
-            
+
             // この投稿をファボったユーザーを取得
             let article_favorite_users = JSON.parse(httpRequest.responseText).article_favorite_users;
             createFavoriteNode(article_favorite_users);
@@ -131,7 +132,7 @@ for (let favorite of favorites) {
       }
     }
 
-    // ajaxで取得したログインユーザーがファボったかを利用して、ハートを切り替える
+    // ajaxで取得した、ログインユーザーがファボったかを利用して、ハートを切り替える
     function toggleHeart(auth_user_favorited){
       if(auth_user_favorited){
         target.firstChild.classList.add('fas');
@@ -142,6 +143,58 @@ for (let favorite of favorites) {
   });
 }
 </script>
+<script>
+// コメントをajaxで実装・・
+// やじるしをクリックすると、コメント投稿処理
+let comments = document.getElementsByClassName('comment');
+for (let comment of comments) {
+  let form = comment.getElementsByTagName('form');
+  let a = comment.getElementsByTagName('a');
+  a[0].addEventListener('click',function(event){
+    event.preventDefault();
+    let url = a[0].getAttribute('href');
+    let value = comment.getElementsByClassName('input')[0].value;
+    var httpRequest = new XMLHttpRequest;
+    var token = document.getElementsByName('csrf-token').item(0).content;
+    httpRequest.onreadystatechange = makeRequest;
+    httpRequest.open('POST', url, true);
+    httpRequest.setRequestHeader('X-CSRF-TOKEN',token);
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
+    httpRequest.send('value=' + encodeURIComponent(value));
 
-</html>
+    function makeRequest(){
+      try {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+          if (httpRequest.status ===200 ) {
+            console.log("成功です");
+            console.log(httpRequest.responseText);
+          }else{
+            console.log("リクエストに問題が発生しました");
+          }
+        }
+      } catch (e) {
+        console.log(e.getMesssage());
+      }
+    }
+  });
+
+  // ajaxで取得したファボっているユーザーを表示する
+  // function createCommentNode(users){
+  //
+  //   var newP = document.createElement('p');
+  //   var newContents = document.createTextNode(users.join(" ")+'がいいねしました');
+  //   newP.appendChild(newContents);
+  //
+  //   if(target.nextElementSibling){
+  //     target.parentElement.removeChild(target.nextElementSibling);
+  //   }
+  //   if (users.length > 0) {
+  //     target.parentElement.insertBefore(newP, target.nextElementSibling);
+  //   }
+  // }
+}
+
+  </script>
+
+  </html>
