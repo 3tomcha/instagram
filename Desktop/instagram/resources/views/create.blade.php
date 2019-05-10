@@ -8,6 +8,16 @@
           新規投稿
         </div>
         <div class="card-body text-center">
+
+          @if($errors->any())
+            <div class="alert alert-danger text-left">
+              <ul>
+                @foreach($errors->all() as $error)
+                <li>{{$error}}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
         <div id="upload_zone" class="text-center mt-2">
           クリックして画像をアップロード
         </div>

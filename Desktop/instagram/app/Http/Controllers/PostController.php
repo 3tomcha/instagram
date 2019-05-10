@@ -35,18 +35,23 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+     public function store(Request $request)
+     {
+       $validated = $request->validate([
+         'caption' => 'required',
+         'image' => 'required|image',
+       ]);
 
-        $upload_file_name = $request->file('image')->store('public/images');
+       $upload_file_name = $validated['image']->store('public/images');
 
-        $article = new Article;
-        $article->caption = $request->input('caption');
-        $article->image = basename($upload_file_name);
-        $article->user_id = auth()->user()->id;
-        $article->save();
-        return \view('create');
-    }
+       $article = new Article;
+       $article->caption = $validated['caption'];
+       $article->image = basename($upload_file_name);
+       $article->user_id = auth()->user()->id;
+       $article->save();
+
+       return view('create');
+     }
 
     /**
      * Display the specified resource.

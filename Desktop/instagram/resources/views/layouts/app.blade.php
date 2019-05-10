@@ -15,10 +15,11 @@
       <a href="/"><img src="/img/logo.png"></a>
       <div class="justyfy-content-end">
         @guest
+        <a href="/register" class="ml-3">新規登録</a>
         <a href="/login" class="ml-3">ログイン</a>
         @endguest
         @auth
-        <a href="/logout" class="ml-3" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
+        <a href="/logout" class="ml-3" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{auth()->user()->name}}</a>
         @endauth
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
           @csrf
