@@ -1,4 +1,5 @@
-@include('layouts.header')
+@extends('layouts.app')
+@section('content')
 <div class="container">
   <div class="col-md-8 mx-auto">
     <div class="mt-4">
@@ -48,7 +49,6 @@
     </div>
   </div>
 </div>
-</body>
 
 <script type="text/javascript">
 // ゴミ箱をクリックすると、削除処理
@@ -197,5 +197,4 @@ for (let comment of comments) {
 }
 
   </script>
-
-  </html>
+@endsection

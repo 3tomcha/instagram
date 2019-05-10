@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'PostController@index')->middleware('auth');
+Route::get('/', 'PostController@index');
 Route::get('ajax/favorites/{id}', 'FavoriteController')->middleware('auth');
 Route::post('ajax/comments/{id}', 'CommentController')->middleware('auth');
 

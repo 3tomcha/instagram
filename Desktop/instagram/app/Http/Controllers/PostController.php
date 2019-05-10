@@ -56,7 +56,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        return view('show', ['article' => Article::find($id)]);
+          //投稿の詳細機能はなし
     }
 
     /**
