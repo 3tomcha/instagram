@@ -8,6 +8,7 @@
         <div class="col card-header">
           <img class="post-profile-icon" src="https://www.gravatar.com/avatar/c2525a7f58ae3776070e44c106c48e15.jpg" alt="C2525a7f58ae3776070e44c106c48e15">
           {{$article->user->name}}
+          @auth
           @if($article->user->id == auth()->user()->id)
           <form class="float-right" action="/posts/{{$article->id}}" name="delete{{$article->id}}" method="post">
             @method('DELETE')
@@ -15,6 +16,7 @@
             <a href="#"><i class="fas fa-trash-alt fa-2x"></i></a>
           </form>
           @endif
+          @endauth
 
         </div>
         <div class="card-img-top text-center">
@@ -196,5 +198,5 @@ for (let comment of comments) {
   }
 }
 
-  </script>
+</script>
 @endsection

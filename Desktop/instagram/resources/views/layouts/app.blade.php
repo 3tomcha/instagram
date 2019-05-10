@@ -15,20 +15,20 @@
       <a href="/"><img src="/img/logo.png"></a>
       <div class="justyfy-content-end">
         @guest
-        <a href="/login">ログイン</a>
+        <a href="/login" class="ml-3">ログイン</a>
         @endguest
         @auth
-        <a href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
+        <a href="/logout" class="ml-3" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
         @endauth
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
           @csrf
         </form>
-        <a href="/posts/create">投稿する</a>
+        <a href="/posts/create" class="ml-3">投稿する</a>
       </div>
     </div>
   </header>
 
-  
+
   <main class="py-4">
     @yield('content')
   </main>
