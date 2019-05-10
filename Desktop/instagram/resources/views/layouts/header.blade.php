@@ -14,7 +14,7 @@
     <div class="navbar navbar-light container mx-auto">
       <a href="/"><img src="/img/logo.png"></a>
       <div class="justyfy-content-end">
-        <a href="/posts/new">投稿する</a>
+        <a href="/posts/create">投稿する</a>
       </div>
     </div>
   </header>

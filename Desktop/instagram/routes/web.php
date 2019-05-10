@@ -10,35 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//
-// Route::get('/', function () {
-//   echo "投稿一覧ページです";
-// });
 
 Route::get('/', 'PostController@index')->middleware('auth');
-Route::get('/posts/new', 'PostController@create')->middleware('auth');;
-Route::post('/posts', 'PostController@store')->middleware('auth');;
-Route::delete('/posts/{id}', 'PostController@destroy')->middleware('auth');;
-Route::get('/posts/{id}', 'PostController@show')->middleware('auth');;
-Route::get('ajax/favorites/{id}', 'FavoriteController')->middleware('auth');;
-Route::post('/comments/{id}', 'CommentController');
-// Route::post('/comments/{id}', 'CommentController@index')->middleware('auth');;
+Route::get('ajax/favorites/{id}', 'FavoriteController')->middleware('auth');
+Route::post('ajax/comments/{id}', 'CommentController')->middleware('auth');
 
-
-
-
-// Route::resource('posts', 'PostController');
-//
-// Route::get('/posts/new', function () {
-//   echo "投稿ページです";
-// });
-
-// Route::get('/posts/19', function () {
-//   echo "投稿詳細ページです";
-// });
-
-// Route::get('/', 'IndeController@index')
-
+Route::resource('posts','PostController')->only([
+    'create','store','destroy',
+])->middleware('auth');
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

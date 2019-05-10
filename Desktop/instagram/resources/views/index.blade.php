@@ -36,10 +36,10 @@
           @endforeach
           <div class="comment_area"></div>
           <div class="comment">
-            <form action="/comments/{{$article->id}}" class="row" method="post">
+            <form action="" class="row" method="post">
               @csrf
               <input type="text" class="h-100 col-md-10 input" name="comment" placeholder="コメント...">
-              <a class="col-md-2 btn-block bg-primary center-block comments" href="/comments/{{$article->id}}"><i class="fas fa-angle-right text-white fa-3x"></i></a>
+              <a class="col-md-2 btn-block bg-primary center-block comments" href="ajax/comments/{{$article->id}}"><i class="fas fa-angle-right text-white fa-3x"></i></a>
             </form>
           </div>
         </div>
