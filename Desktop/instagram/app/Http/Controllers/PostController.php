@@ -15,12 +15,8 @@ class PostController extends Controller
      */
      public function index()
      {
-       // $favorite = new Favorite;
-       // foreach (Favorite::all()->unique('article_id') as $f) {
-       //   $favorites[$f->article_id] = $favorite->select(['user_id'])->where('article_id',$f->article_id)->get();
-       // }
-       // dd($favorites);
-       return view('index', ['articles' => Article::all()]);
+       $articles = new Article;
+       return view('index', ['articles' => $articles->orderByDesc('updated_at')->get()]);
      }
 
     /**
