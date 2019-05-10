@@ -34,7 +34,7 @@
             <span class="text-secondary">{{$comment->updated_at}}</span>
           </div>
           @endforeach
-          <div id="comment_area"></div>
+          <div class="comment_area"></div>
           <div class="comment">
             <form action="/comments/{{$article->id}}" class="row" method="post">
               @csrf
@@ -64,19 +64,6 @@ for (let card_header of card_headers) {
   }
 }
 </script>
-
-<!-- <script type="text/javascript">
-// やじるしをクリックすると、コメント投稿処理
-let comments = document.getElementsByClassName('comment');
-for (let comment of comments) {
-let form = comment.getElementsByTagName('form');
-let a = comment.getElementsByTagName('a');
-a[0].addEventListener('click',function(event){
-event.preventDefault();
-form[0].submit();
-});
-}
-</script> -->
 
 <script type="text/javascript">
 // ハートをクリックすると、いいね処理
@@ -144,18 +131,24 @@ for (let favorite of favorites) {
 }
 </script>
 <script>
-// コメントをajaxで実装・・
 // やじるしをクリックすると、コメント投稿処理
 let comments = document.getElementsByClassName('comment');
 for (let comment of comments) {
-  let form = comment.getElementsByTagName('form');
-  let a = comment.getElementsByTagName('a');
-  a[0].addEventListener('click',function(event){
+
+  // comment_areaは追加の内容を差し込む箇所
+  let comment_area = document.getElementsByClassName('comment_area')[0];
+  let a = comment.getElementsByTagName('a')[0];
+
+  a.addEventListener('click',function(event){
     event.preventDefault();
-    let url = a[0].getAttribute('href');
+
+    let url = a.getAttribute('href');
     let value = comment.getElementsByClassName('input')[0].value;
     var httpRequest = new XMLHttpRequest;
+
+    // POST送信のため、csrftokenも一緒に送る。csrf-tokenはmetaタグに指定有り
     var token = document.getElementsByName('csrf-token').item(0).content;
+
     httpRequest.onreadystatechange = makeRequest;
     httpRequest.open('POST', url, true);
     httpRequest.setRequestHeader('X-CSRF-TOKEN',token);
@@ -168,13 +161,8 @@ for (let comment of comments) {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
           if (httpRequest.status ===200 ) {
             console.log("成功です");
-            console.log(httpRequest.responseText);
-            console.log(JSON.parse(httpRequest.responseText));
-            // let name = JSON.parse(httpRequest.responseText).comment_user_name;
-            // let comment = JSON.parse(httpRequest.responseText).comment_comment;
-            // let updated_at = JSON.parse(httpRequest.responseText).comment_comment;
-            console.log(comment);
             createCommentNode(JSON.parse(httpRequest.responseText));
+            comment.getElementsByClassName('input')[0].value = "";
           }else{
             console.log("リクエストに問題が発生しました");
           }
@@ -185,25 +173,26 @@ for (let comment of comments) {
     }
   });
 
-  //ajaxで取得したファボっているユーザーを表示する
+  //ajaxで取得したユーザー・コメント・更新日時を表示する
   function createCommentNode(json_data){
-    console.log(json_data.comment_user_name);
 
-    // これから下記部分を作成していく
-      // <strong class='mr-1'>{{$comment->user->name}}</strong>{{$comment->comment}}<br>
-      // <span class="text-secondary">{{$comment->updated_at}}</span>
+    let strong = document.createElement("strong");
+    strong.classList.add('mr-1');
+    strong.appendChild(document.createTextNode(json_data.comment_user_name));
 
+    let span = document.createElement("span");
+    span.classList.add('text-secondary');
+    span.appendChild(document.createTextNode(json_data.comment_updated_at));
 
-    // var newP = document.createElement('p');
-    // var newContents = document.createTextNode(users.join(" ")+'がいいねしました');
-    // newP.appendChild(newContents);
-    //
-    // if(target.nextElementSibling){
-    //   target.parentElement.removeChild(target.nextElementSibling);
-    // }
-    // if (users.length > 0) {
-    //   target.parentElement.insertBefore(newP, target.nextElementSibling);
-    // }
+    let div = document.createElement("div");
+    div.classList.add('col','mb-1');
+
+    div.appendChild(strong);
+    div.appendChild(document.createTextNode(json_data.comment_comment));
+    div.appendChild(document.createElement("br"));
+    div.appendChild(span);
+    comment_area.appendChild(div);
+
   }
 }
 
